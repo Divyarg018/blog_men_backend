@@ -1,6 +1,6 @@
 const express = require ("express");
-const getAllBlogs = require("../controllers/blog-controller");
-const addBlog = require("../controllers/blog-controller");
+const getAllBlogs = require("../controllers/blog-controller.js");
+const addBlog = require("../controllers/blog-controller.js");
 
 //   deleteBlog,
 
