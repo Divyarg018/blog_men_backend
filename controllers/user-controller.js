@@ -29,13 +29,13 @@ const signup = async (req, res, next) => {
         .status(400)
         .json({ message: "User Already Exists! Login Instead" });
     }
-    const hashedPassword = bcrypt.hashSync(password);
+    // const hashedPassword = bcrypt.hashSync(password);
   
     const user = new User({
       name,
       email,
-      password: hashedPassword,
-      blogs: [],
+      password
+    //   blogs: [],
     });
   
     try {
@@ -44,10 +44,10 @@ const signup = async (req, res, next) => {
       return console.log(err);
     }
     return res.status(201).json({ user });
-  };
+  }
   module.exports = signup;
   
-   const login = async (req, res, next) => {
+  /* const login = async (req, res, next) => {
     const { email, password } = req.body;
     let existingUser;
     try {
@@ -66,6 +66,6 @@ const signup = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: "Login Successfull", user: existingUser });
-  };
-  module.exports = login;
+  }
+  module.exports = login;*/
 
