@@ -11,7 +11,7 @@ const User =  require ("../model/User.js");
   if (!users) {
     return res.status(404).json({ message: "No Users Found" });
   }
-  return res.status(200).json({ users });
+//   return res.status(200).json({ users });
 }
 module.exports = getAllUser;
 
