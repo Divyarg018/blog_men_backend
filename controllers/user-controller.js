@@ -48,7 +48,7 @@ const signup = async (req, res, next) => {
   }
   module.exports = signup;
   
-  /* const login = async (req, res, next) => {
+   const login = async (req, res, next) => {
     const { email, password } = req.body;
     let existingUser;
     try {
@@ -68,5 +68,5 @@ const signup = async (req, res, next) => {
       .status(200)
       .json({ message: "Login Successfull", user: existingUser });
   }
-  module.exports = login;*/
+  module.exports = login;
 
