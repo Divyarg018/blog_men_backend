@@ -50,7 +50,7 @@ module.exports = getAllBlogs;
 }
 module.exports = addBlog;
 
- /*const updateBlog = async (req, res, next) => {
+ const updateBlog = async (req, res, next) => {
   const { title, description } = req.body;
   const blogId = req.params.id;
   let blog;
@@ -69,7 +69,7 @@ module.exports = addBlog;
 };
 module.exports = updateBlog;
 
- const getById = async (req, res, next) => {
+ /*const getById = async (req, res, next) => {
   const id = req.params.id;
   let blog;
   try {
