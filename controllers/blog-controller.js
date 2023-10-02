@@ -1,8 +1,8 @@
-const mongoose = require ("mongoose");
-const Blog = require ("../model/Blog.js");
-const User = require ("../model/User.js");
+const mongoose = require("mongoose");
+const Blog = require("../model/Blog.js");
+const User = require("../model/User.js");
 
- const getAllBlogs = async (req, res, next) => {
+module.exports.getAllBlogs = async (req, res, next) => {
   let blogs;
   try {
     blogs = await Blog.find().populate("user");
@@ -14,20 +14,20 @@ const User = require ("../model/User.js");
   }
   return res.status(200).json({ blogs });
 }
-module.exports = getAllBlogs;
 
- const addBlog = async (req, res, next) => {
+
+module.exports.addBlog = async (req, res, next) => {
   const { title, description, image, user } = req.body;
 
-  // let existingUser;
-  // try {
-  //   existingUser = await User.findById(user);
-  // } catch (err) {
-  //   return console.log(err);
-  // }
-  // if (!existingUser) {
-  //   return res.status(400).json({ message: "Unable TO Find User By This ID" });
-  // }
+  let existingUser;
+  try {
+    existingUser = await User.findById(user);
+  } catch (err) {
+    return console.log(err);
+  }
+  if (!existingUser) {
+    return res.status(400).json({ message: "Unable TO Find User By This ID" });
+  }
   const blog = new Blog({
     title,
     description,
@@ -35,29 +35,29 @@ module.exports = getAllBlogs;
     user,
   });
   try {
-    // const session = await mongoose.startSession();
-    // session.startTransaction();
+    const session = await mongoose.startSession();
+    session.startTransaction({ session });
     await blog.save({ session });
-    // existingUser.blogs.push(blog);
-    // await existingUser.save({ session });
-    // await session.commitTransaction();
+    existingUser.blogs.push(blog);
+    await existingUser.save({ session });
+    await session.commitTransaction();
   } catch (err) {
     console.log(err);
-    // return res.status(500).json({ message: err });
+    return res.status(500).json({ message: err });
   }
 
   return res.status(200).json({ blog });
 }
-module.exports = addBlog;
 
- const updateBlog = async (req, res, next) => {
+
+module.exports.updateBlog = async (req, res, next) => {
   const { title, description } = req.body;
   const blogId = req.params.id;
   let blog;
   try {
     blog = await Blog.findByIdAndUpdate(blogId, {
-      title,
-      description,
+      "title": title,
+      "description": description,
     });
   } catch (err) {
     return console.log(err);
@@ -67,13 +67,13 @@ module.exports = addBlog;
   }
   return res.status(200).json({ blog });
 };
-module.exports = updateBlog;
 
- /*const getById = async (req, res, next) => {
+
+module.exports.getById = async (req, res, next) => {
   const id = req.params.id;
   let blog;
   try {
-    blog = await Blog.findById(id);
+    blog = await Blog.findById(id).populate('user');
   } catch (err) {
     return console.log(err);
   }
@@ -82,9 +82,9 @@ module.exports = updateBlog;
   }
   return res.status(200).json({ blog });
 }
-module.exports = getById;
 
- const deleteBlog = async (req, res, next) => {
+
+module.exports.deleteBlog = async (req, res, next) => {
   const id = req.params.id;
 
   let blog;
@@ -100,19 +100,20 @@ module.exports = getById;
   }
   return res.status(200).json({ message: "Successfully Delete" });
 }
-module.exports = deleteBlog;
 
- const getByUserId = async (req, res, next) => {
+
+module.exports.getByUserId = async (req, res, next) => {
   const userId = req.params.id;
-  let userBlogs;
+  //console.log(userId);
+  let user;
   try {
-    userBlogs = await User.findById(userId).populate("blogs");
+    user = await User.findById(userId).populate("blogs");
+    console.log(user);
   } catch (err) {
     return console.log(err);
   }
-  if (!userBlogs) {
+  if (!user) {
     return res.status(404).json({ message: "No Blog Found" });
   }
-  return res.status(200).json({ user: userBlogs });
-}
-module.exports = getByUserId;*/
+  return res.status(200).json({ user });
+};
