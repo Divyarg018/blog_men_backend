@@ -7,7 +7,7 @@ module.exports.getAllUser = async (req, res, next) => {
     try {
         users = await User.find({});
     } catch (err) {
-        console.log(err);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
     if (!users) {
         return res.status(404).json({ message: "No Users Found" });
@@ -23,7 +23,7 @@ module.exports.signup = async (req, res, next) => {
     try {
         existingUser = await User.findOne({ email });
     } catch (err) {
-        return console.log(err);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
     if (existingUser) {
         return res
@@ -54,7 +54,7 @@ module.exports.login = async (req, res, next) => {
     try {
         existingUser = await User.findOne({ email });
     } catch (err) {
-        return console.log(err);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
     if (!existingUser) {
         return res.status(404).json({ message: "Couldnt Find User By This Email" });
